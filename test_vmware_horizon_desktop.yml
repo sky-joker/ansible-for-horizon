@@ -1,0 +1,42 @@
+---
+- name: vmware_horizon_desktop module test
+  hosts: windows
+  gather_facts: no
+  vars:
+    cs_hostname: 192.168.0.181
+    cs_username: administrator
+    cs_password: secret
+    domain: example.local
+    vcenter_server: 192.168.0.111
+    desktop_pool: POOL01
+    name: CLIENT01
+  tasks:
+    - name: Add VM to Desktop Pool.
+      vmware_horizon_desktop:
+        hostname: "{{ cs_hostname }}"
+        username: "{{ cs_username }}"
+        password: "{{ cs_password }}"
+        domain: "{{ domain }}"
+        validate_certs: no
+        vcenter_server: "{{ vcenter_server }}"
+        desktop_pool: "{{ desktop_pool }}"
+        name: "{{ name }}"
+        state: present
+      register: vmware_horizon_desktop_result
+
+    - debug: var=vmware_horizon_desktop_result
+
+    - name: Delete VM from Desktop Pool.
+      vmware_horizon_desktop:
+        hostname: "{{ cs_hostname }}"
+        username: "{{ cs_username }}"
+        password: "{{ cs_password }}"
+        domain: "{{ domain }}"
+        validate_certs: no
+        vcenter_server: "{{ vcenter_server }}"
+        desktop_pool: "{{ desktop_pool }}"
+        name: "{{ name }}"
+        state: absent
+      register: vmware_horizon_desktop_result
+
+    - debug: var=vmware_horizon_desktop_result
